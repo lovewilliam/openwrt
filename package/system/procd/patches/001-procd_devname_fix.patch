@@ -1,0 +1,39 @@
+Index: procd-2013-10-09/hotplug.c
+===================================================================
+--- procd-2013-10-09.orig/hotplug.c
++++ procd-2013-10-09/hotplug.c
+@@ -127,8 +127,34 @@ static void handle_exec(struct blob_attr
+ 	int rem, fd;
+ 	int i = 0;
+ 
++//dirty hack
++//2013 by lovewilliam<lovewilliam@gmail.com>
++//fix devname problem for usb-serial tty
++//
++
++	char* devname = NULL;
++	char* devpath = NULL;
++	
+ 	blobmsg_for_each_attr(cur, msg, rem)
++	{
++		if(!strcmp(blobmsg_name(cur),"DEVNAME"))
++		{
++			devname = blobmsg_data(cur);
++		}
++		if(!strcmp(blobmsg_name(cur),"DEVPATH"))
++		{
++			devpath = blobmsg_data(cur);
++		}
+ 		setenv(blobmsg_name(cur), blobmsg_data(cur), 1);
++	}
++	if(!devname)
++	{
++		char* sep = strrchr(devpath, '/');
++		if (sep)
++			sep = sep + 1;
++		setenv("DEVNAME",sep,1);
++	}
++////////////////////
+ 
+ 	blobmsg_for_each_attr(cur, data, rem) {
+ 		argv[i] = blobmsg_data(cur);
