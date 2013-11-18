@@ -33,6 +33,15 @@ proto_3g_setup() {
 		cdma|evdo)
 			chat="/etc/chatscripts/evdo.chat"
 		;;
+		tdscdma)
+			chat="/etc/chatscripts/tdscdma.chat"
+                        [ -n "$MODE" ] && gcom -d "$device" -s /etc/gcom/setmode.gcom
+
+                        # wait for carrier to avoid firmware stability bugs
+                        [ -n "$SIERRA" ] && {
+                                gcom -d "$device" -s /etc/gcom/getcarrier.gcom || return 1
+                        }
+		;;
 		*)
 			chat="/etc/chatscripts/3g.chat"
 			cardinfo=$(gcom -d "$device" -s /etc/gcom/getcardinfo.gcom)

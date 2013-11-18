@@ -50,6 +50,7 @@ define Package/comgt/install
 	$(INSTALL_DIR) $(1)/etc/chatscripts
 	$(INSTALL_DATA) ./files/3g.chat $(1)/etc/chatscripts/3g.chat
 	$(INSTALL_DATA) ./files/evdo.chat $(1)/etc/chatscripts/evdo.chat
+	$(INSTALL_DATA) ./files/tdscdma.chat $(1)/etc/chatscripts/tdscdma.chat
 	$(INSTALL_DIR) $(1)/etc/gcom
 	$(INSTALL_DATA) ./files/setpin.gcom $(1)/etc/gcom/setpin.gcom
 	$(INSTALL_DATA) ./files/setmode.gcom $(1)/etc/gcom/setmode.gcom
@@ -60,6 +61,8 @@ define Package/comgt/install
 	$(INSTALL_DATA) ./files/getimsi.gcom $(1)/etc/gcom/getimsi.gcom
 	$(INSTALL_DIR) $(1)/etc/hotplug.d/tty
 	$(INSTALL_DATA) ./files/3g.usb $(1)/etc/hotplug.d/tty/30-3g
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/usb-serial
+	ln -s /etc/hotplug.d/tty/30-3g $(1)/etc/hotplug.d/usb-serial/30-3g
 	$(INSTALL_DIR) $(1)/lib/netifd/proto
 	$(INSTALL_BIN) ./files/3g.sh $(1)/lib/netifd/proto/3g.sh
 endef
