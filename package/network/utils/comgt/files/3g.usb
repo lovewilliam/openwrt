@@ -23,6 +23,10 @@ find_3g_iface() {
 	fi
 }
 
+if [ -z "$DEVICENAME" ];then
+        DEVICENAME=$DEVNAME
+fi
+
 case "$DEVICENAME" in
 	tty*)
 		[ -e "/dev/$DEVICENAME" ] || [ "$ACTION" = remove ] || exit 0
