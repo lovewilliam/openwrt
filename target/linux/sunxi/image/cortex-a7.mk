@@ -119,10 +119,31 @@ TARGET_DEVICES += sun8i-h2-plus-orangepi-zero
 
 
 define Device/sun8i-h2-plus-orangepi-r1
+  BOARD_NAME := orangepi-r1
   DEVICE_TITLE:=Xunlong Orange Pi R1
-  DEVICE_PACKAGES:=kmod-rtc-sunxi kmod-usb-net kmod-usb-net-rtl8152
+  DEVICE_PACKAGES:=kmod-rtc-sunxi kmod-usb-net kmod-usb-net-rtl8152 \
+	  kmod-rtl8189 kmod-leds-gpio kmod-ledtrig-heartbeat wpad-basic \
+	  uboot-envtools
   SUPPORTED_DEVICES:=xunlong,orangepi-r1
   SUNXI_DTS:=sun8i-h2-plus-orangepi-r1
+  DEVICE_DTS := sun8i-h2-plus-orangepi-r1
+
+  #if uboot use uImage, need to set this
+  #KERNEL_LOADADDR := 0x41000000
+
+  KERNELNAME:=zImage dtbs
+  KERNEL_NAME := zImage
+  KERNEL_SIZE := 4096k
+  #uboot use zImage
+  KERNEL := kernel-bin
+
+  PAGESIZE := 2048
+  SUBPAGESIZE := 512
+  BLOCKSIZE := 128k
+  IMAGES := factory.bin
+  DTB_SIZE := 64k
+  IMAGE_SIZE := 15360k
+  IMAGE/factory.bin := append-dtb | pad-to 64k | append-kernel | pad-to 4160k | append-rootfs | pad-rootfs | append-metadata | check-size $$$$(IMAGE_SIZE)
 endef
 
 TARGET_DEVICES += sun8i-h2-plus-orangepi-r1
